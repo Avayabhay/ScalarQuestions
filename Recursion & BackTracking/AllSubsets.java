@@ -1,3 +1,16 @@
+//Given a set of positive integers, find all its subsets.
+// Input : 
+// array = {1, 2, 3}
+// Output :
+//               // this space denotes null element. 
+// 1
+// 1 2
+// 1 2 3
+// 1 3
+// 2
+// 2 3
+// 3
+
 class AllSubsets
 {
     public static ArrayList<ArrayList<Integer>> subsets(ArrayList<Integer> A)
@@ -22,7 +35,7 @@ class AllSubsets
             //Select the first element and recurse on the 2nd element
             store.add(arr.get(index));
             generateSubsets(arr, index + 1, store, ans);
-            store.remove(arr.get(index));
+            store.remove(store.size() -1);
             
         }
 }
