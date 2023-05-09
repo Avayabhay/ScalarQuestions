@@ -1,3 +1,4 @@
+
 //class node{
 	//int data;
 	//Node left;
@@ -9,35 +10,54 @@
 	//}
 	//}  
 
-public class LargestBSTInBinaryTree {
-    private static int ans = 1;
-    
-    // Return the size of the largest sub-tree which is also a BST
-    static int largestBst(Node root)
-    {
-        // Write your code here 
-        return findLargestBST(root, Integer.MAX_VALUE, Integer.MIN_VALUE);
+    class nodeInfo{
+        int min;
+        int max;
+        int size;
+        boolean isBST;
+        nodeInfo() {}
+        
+        nodeInfo(int size, int max, int min, boolean isBST)
+        {
+            this.size = size;
+            this.max = max;
+            this.min = min;
+            this.isBST = isBST;
+        }
+    }  
+    public class LargestBSTInBinaryTree {
+        
+        private int ans = Integer.MIN_VALUE;
+        
+        
+        main(){
+            return findLargest(root).size();
+        }
+        
+        public nodeInfo findLargestBST(node root) {
+            
+            if(root == null) {
+                return new nodeInfo(0,Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+            }
+            
+            nodeInfo left = findLargestBST(root.left);
+            nodeInfo right = findLargestBST(root.right);
+            
+            nodeInfo temp = new nodeInfo();
+            temp.min = Math.min(left.min, root.data);
+            temp.max = Math.max(right.max, root.data);
+            
+            temp.isBST = left.isBST && right.isBST && root.data > left.max && root.data < right.min;
+            
+            if(temp.isBST) {
+                temp.size = left.size + right.size + 1;
+            }
+            else {
+                temp.size = Math.max(left.size,  right.size);
+            }
+            
+            return temp;
+            
+        }
         
     }
-    public static int findLargestBST(Node root, int max, int min) {
-		
-		if(root == null) {
-			return 0;
-		}
-		
-		
-		int leftSize = findLargestBST(root.left, root.data, min);
-		int rightSize = findLargestBST(root.right, max, root.data);
-		
-		if(root.data < min || root.data > max) {
-			return -1;
-		}
-		
-		if(leftSize != -1 || rightSize != -1) {
-			return -1;
-		}
-
-		return Math.max(leftSize + rightSize + 1, ans);
-	}
-    
-}
